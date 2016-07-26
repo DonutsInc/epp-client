@@ -6,8 +6,8 @@ class TestEppContactCreateCommand < Test::Unit::TestCase
       @contact_create = EPP::Contact::Create.new('UK-4398495',
         :voice       => "+44.1234567890",
         :email       => "enoch.root@test.host",
-        :postal_info => {
-          :type      => "loc",
+        :postal_info => [
+          {:type      => "loc",
           :org       => "Epiphyte",
           :name      => "Enoch Root",
           :addr      => {
@@ -16,6 +16,16 @@ class TestEppContactCreateCommand < Test::Unit::TestCase
             :sp      => "Testshire",
             :pc      => "TE57 1NG",
             :cc      => "GB" } },
+          {:type      => "int",
+           :org       => "Epiphyte",
+           :name      => "Enoch Root",
+           :addr      => {
+               :street  => "Test Suite\n1 Test Avenue",
+               :city    => "Testington",
+               :sp      => "Testshire",
+               :pc      => "TE57 1NG",
+               :cc      => "GB" } }
+        ],
         :auth_info   => {:pw => '2381728348'},
         :disclose    => {"0" => %w(voice email)})
 
@@ -58,6 +68,12 @@ class TestEppContactCreateCommand < Test::Unit::TestCase
       assert_equal "Testshire", xpath_find('//contact:postalInfo[@type="loc"]/contact:addr/contact:sp')
       assert_equal "TE57 1NG", xpath_find('//contact:postalInfo[@type="loc"]/contact:addr/contact:pc')
       assert_equal "GB", xpath_find('//contact:postalInfo[@type="loc"]/contact:addr/contact:cc')
+      assert_equal "Test Suite", xpath_find('//contact:postalInfo[@type="int"]/contact:addr/contact:street[1]')
+      assert_equal "1 Test Avenue", xpath_find('//contact:postalInfo[@type="int"]/contact:addr/contact:street[2]')
+      assert_equal "Testington", xpath_find('//contact:postalInfo[@type="int"]/contact:addr/contact:city')
+      assert_equal "Testshire", xpath_find('//contact:postalInfo[@type="int"]/contact:addr/contact:sp')
+      assert_equal "TE57 1NG", xpath_find('//contact:postalInfo[@type="int"]/contact:addr/contact:pc')
+      assert_equal "GB", xpath_find('//contact:postalInfo[@type="int"]/contact:addr/contact:cc')
     end
 
     should 'set authInfo' do
