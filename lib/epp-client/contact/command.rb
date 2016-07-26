@@ -46,7 +46,7 @@ module EPP
 
         def postal_info_to_xml(postal_info)
           node = contact_node('postalInfo')
-          node['type'] = 'loc'
+          node['type'] = postal_info[:type] || 'loc'
 
           node << contact_node('name', postal_info[:name])
           node << contact_node('org', postal_info[:org]) if postal_info[:org]

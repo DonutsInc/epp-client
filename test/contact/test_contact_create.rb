@@ -7,6 +7,7 @@ class TestEppContactCreateCommand < Test::Unit::TestCase
         :voice       => "+44.1234567890",
         :email       => "enoch.root@test.host",
         :postal_info => {
+          :type      => "loc",
           :org       => "Epiphyte",
           :name      => "Enoch Root",
           :addr      => {
